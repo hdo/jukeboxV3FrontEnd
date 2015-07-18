@@ -29,6 +29,8 @@ DetailedGameListView::DetailedGameListView(Window* window, FileData* root) :
 	mImage.setMaxSize(mSize.x() * (0.50f - 2*padding), mSize.y() * 0.4f);
 	addChild(&mImage);
 
+
+    /*
 	// metadata labels + values
 	mLblRating.setText("Rating: ");
 	addChild(&mLblRating);
@@ -56,11 +58,15 @@ DetailedGameListView::DetailedGameListView(Window* window, FileData* root) :
 	addChild(&mLblPlayCount);
 	addChild(&mPlayCount);
 
+*/
+
+/*
 	mDescContainer.setPosition(mSize.x() * padding, mSize.y() * 0.65f);
 	mDescContainer.setSize(mSize.x() * (0.50f - 2*padding), mSize.y() - mDescContainer.getPosition().y());
 	mDescContainer.setAutoScroll(true);
 	addChild(&mDescContainer);
 
+*/
 	mDescription.setFont(Font::get(FONT_SIZE_SMALL));
 	mDescription.setSize(mDescContainer.getSize().x(), 0);
 	mDescContainer.addChild(&mDescription);
