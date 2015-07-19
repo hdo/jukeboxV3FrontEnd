@@ -49,7 +49,7 @@ FileData* findOrCreateFile(SystemData* system, const boost::filesystem::path& pa
 				LOG(LogWarning) << "gameList: folder doesn't already exist, won't create";
 				return NULL;
 			}
-
+    		//LOG(LogInfo) << "File type" << type << " File path \"" << path << "System " << system;
 			FileData* file = new FileData(type, path, system);
 			treeNode->addChild(file);
 			return file;
@@ -104,6 +104,8 @@ void parseGamelist(SystemData* system)
 
 	fs::path relativeTo = system->getStartPath();
 
+	FileData* rootFd = system->getRootFolder();
+
 	const char* tagList[2] = { "game", "folder" };
 	FileType typeList[2] = { GAME, FOLDER };
 	for(int i = 0; i < 2; i++)
@@ -114,21 +116,32 @@ void parseGamelist(SystemData* system)
 		{
 			fs::path path = resolvePath(fileNode.child("path").text().get(), relativeTo, false);
 			
+			/*
 			if(!boost::filesystem::exists(path))
 			{
 				LOG(LogWarning) << "File \"" << path << "\" does not exist! Ignoring.";
-				continue;
+				//continue;
 			}
+			*/
 
-			FileData* file = findOrCreateFile(system, path, type);
-			if(!file)
+			// FileData* file = findOrCreateFile(system, path, type);
+			
+			/*
+			if(!file )
 			{
 				LOG(LogError) << "Error finding/creating FileData for \"" << path << "\", skipping.";
 				continue;
+    			//file = new FileData(GAME, root->getPath(), system);
 			}
+			*/
+
+			FileData* file = new FileData(GAME, path, system);
+			rootFd->addChild(file);
 
 			//load the metadata
-			std::string defaultName = file->metadata.get("name");
+			//std::string defaultName = file->metadata.get("name");
+			std::string defaultName = "defaultName";
+
 			file->metadata = MetaDataList::createFromXML(GAME_METADATA, fileNode, relativeTo);
 
 			//make sure name gets set if one didn't exist
