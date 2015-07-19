@@ -106,6 +106,44 @@ void parseGamelist(SystemData* system)
 
 	FileData* rootFd = system->getRootFolder();
 
+	// parse folders first
+	//const char* tag = "folder";
+
+	for(pugi::xml_node fileNode = root.child("folder"); fileNode; fileNode = fileNode.next_sibling("folder"))
+	{
+		fs::path path = resolvePath(fileNode.child("path").text().get(), relativeTo, false);
+
+		FileData* file = new FileData(FOLDER, path, system);
+		rootFd->addChild(file);
+
+		//load the metadata
+		//std::string defaultName = file->metadata.get("name");
+		std::string defaultName = "defaultName";
+
+		file->metadata = MetaDataList::createFromXML(FOLDER_METADATA, fileNode, relativeTo);
+
+		//make sure name gets set if one didn't exist
+		if(file->metadata.get("name").empty())
+			file->metadata.set("name", defaultName);
+
+		for (pugi::xml_node childNode = fileNode.child("game"); childNode; childNode = childNode.next_sibling("game")) {
+			fs::path path = resolvePath(childNode.child("path").text().get(), relativeTo, false);
+			FileData* newFile = new FileData(GAME, path, system);
+			file->addChild(newFile);
+
+			newFile->metadata = MetaDataList::createFromXML(GAME_METADATA, childNode, relativeTo);
+
+			//make sure name gets set if one didn't exist
+			if(newFile->metadata.get("name").empty())
+				newFile->metadata.set("name", defaultName);
+
+		}
+	}
+
+
+
+	/*
+
 	const char* tagList[2] = { "game", "folder" };
 	FileType typeList[2] = { GAME, FOLDER };
 	for(int i = 0; i < 2; i++)
@@ -116,24 +154,6 @@ void parseGamelist(SystemData* system)
 		{
 			fs::path path = resolvePath(fileNode.child("path").text().get(), relativeTo, false);
 			
-			/*
-			if(!boost::filesystem::exists(path))
-			{
-				LOG(LogWarning) << "File \"" << path << "\" does not exist! Ignoring.";
-				//continue;
-			}
-			*/
-
-			// FileData* file = findOrCreateFile(system, path, type);
-			
-			/*
-			if(!file )
-			{
-				LOG(LogError) << "Error finding/creating FileData for \"" << path << "\", skipping.";
-				continue;
-    			//file = new FileData(GAME, root->getPath(), system);
-			}
-			*/
 
 			FileData* file = new FileData(GAME, path, system);
 			rootFd->addChild(file);
@@ -149,6 +169,7 @@ void parseGamelist(SystemData* system)
 				file->metadata.set("name", defaultName);
 		}
 	}
+	*/
 }
 
 void addFileDataNode(pugi::xml_node& parent, const FileData* file, const char* tag, SystemData* system)
