@@ -49,6 +49,9 @@ bool parseArgs(int argc, char* argv[], unsigned int* width, unsigned int* height
 		}else if(strcmp(argv[i], "--ignore-gamelist") == 0)
 		{
 			Settings::getInstance()->setBool("IgnoreGamelist", true);
+		}else if(strcmp(argv[i], "--disable-file-check") == 0)
+		{
+			Settings::getInstance()->setBool("DisableFileCheck", true);
 		}else if(strcmp(argv[i], "--draw-framerate") == 0)
 		{
 			Settings::getInstance()->setBool("DrawFramerate", true);
@@ -165,6 +168,12 @@ int main(int argc, char* argv[])
 
 	if(!parseArgs(argc, argv, &width, &height))
 		return 0;
+
+
+    // FORCE SETTINGS
+    Settings::getInstance()->setBool("ParseGamelistOnly", true);
+
+
 
 	// only show the console on Windows if HideConsole is false
 #ifdef WIN32
