@@ -126,6 +126,7 @@ void parseGamelist(SystemData* system)
 		if(file->metadata.get("name").empty())
 			file->metadata.set("name", defaultName);
 
+		// parse game items for current folder
 		for (pugi::xml_node childNode = fileNode.child("game"); childNode; childNode = childNode.next_sibling("game")) {
 			fs::path path = resolvePath(childNode.child("path").text().get(), relativeTo, false);
 			FileData* newFile = new FileData(GAME, path, system);
