@@ -4,6 +4,8 @@
 #include "views/ViewController.h"
 #include "Sound.h"
 #include "Settings.h"
+#include "Log.h"
+
 
 ISimpleGameListView::ISimpleGameListView(Window* window, FileData* root) : IGameListView(window, root),
 	mHeaderText(window), mHeaderImage(window), mBackground(window), mThemeExtras(window)
@@ -80,9 +82,13 @@ bool ISimpleGameListView::input(InputConfig* config, Input input)
 				setCursor(mCursorStack.top());
 				mCursorStack.pop();
 				Sound::getFromTheme(getTheme(), getName(), "back")->play();
-			}else{
+			}
+			else{
+				/*
 				onFocusLost();
 				ViewController::get()->goToSystemView(getCursor()->getSystem());
+				*/
+				LOG(LogInfo) << "System view is disabled!";
 			}
 
 			return true;
