@@ -53,10 +53,12 @@ SystemData::SystemData(const std::string& name, const std::string& fullName, con
 SystemData::~SystemData()
 {
 	//save changed game data back to xml
+	/*
 	if(!Settings::getInstance()->getBool("IgnoreGamelist"))
 	{
 		updateGamelist(this);
 	}
+	*/
 
 	delete mRootFolder;
 }
