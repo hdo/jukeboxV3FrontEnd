@@ -274,3 +274,11 @@ std::vector<GuiComponent*> DetailedGameListView::getMDValues()
 	ret.push_back(&mPlayCount);
 	return ret;
 }
+
+
+void DetailedGameListView::populateList(const std::vector<FileData*>& files)
+{
+	BasicGameListView::populateList(files);
+	updateInfoPanel();
+}
+
